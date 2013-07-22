@@ -9,7 +9,6 @@
 if (typeof window.Speroteck == 'undefined') {
     window.Speroteck = {};
 }
-
 Speroteck.Artist = Class.create({
 
     initialize: function ()
@@ -19,6 +18,7 @@ Speroteck.Artist = Class.create({
     line: function(coords){
         return new fabric.Line(coords, {
             strokeWidth: 5,
+            stroke: '#000',
             selectable: false
         });
     },
@@ -27,17 +27,28 @@ Speroteck.Artist = Class.create({
             left: left,
             top: top,
             fill: '#000',
+            stroke: '#red',
             width: width,
             height: height
         });
     },
-    setColor: function(obj, color, fs){
-        if(fs=='fill'){
-            obj.fill = color;
-        } else {
-            obj.stroke = color
-        }
+    setColorStroke: function(obj, color){
+        obj.stroke = color
         return obj;
+    },
+    setColorFill: function(obj, color){
+        obj.fill = color;
+        return obj;
+    },
+    text: function(left, top, msg){
+        return new fabric.Text(msg, {
+            fontFamily: 'Arial',
+            fontSize: 20,
+            left: left,
+            top: top,
+            fill: 'black',
+            originY: 'center'
+        });
     }
 
 })

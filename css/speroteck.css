@@ -9,6 +9,8 @@
     width: 800px;
     height: 600px;
     position: absolute;
+    left: 0;
+    top:0;
 }
 canvas#layer1{ z-index: 1;}
 canvas#layer2{ z-index: 2;}

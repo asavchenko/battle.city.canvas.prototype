@@ -5,6 +5,7 @@
     <script type="text/javascript" src="js/libs/prototype.js"></script>
     <script type="text/javascript" src="js/libs/fabric.js"></script>
     <script type="text/javascript" src="js/speroteck/artist.js"></script>
+    <script type="text/javascript" src="js/speroteck/tank.js"></script>
     <link rel="stylesheet" type="text/css" href="css/speroteck.css"/>
 </head>
 <body>
@@ -14,16 +15,19 @@
         <canvas id="layer3" width="800" height="600"></canvas>
     </div>
     <script type="text/javascript">
+        if (typeof window.Speroteck == 'undefined') {
+            window.Speroteck = {};
+        }
         var artist = new Speroteck.Artist();
         var canvas1 = new fabric.Canvas('layer1');
 
-        var line = artist.line([ 250, 125, 250, 175 ])
-        line = artist.setColor(line, '#000000', 'stroke');
-        var rectangle = artist.rectangle(50, 50, 50, 80);
-        rectangle = artist.setColor(rectangle, 'red', 'fill');
-        rectangle = artist.setColor(rectangle, 'red', 'stroke');
+        var tank = new Speroteck.Tank(250, 175, 'top');
+        tank.rectangle = artist.setColorFill(tank.rectangle, '#555');
+        tank.show(canvas1);
 
-        canvas1.add(line, rectangle)
+        var tank2 = new Speroteck.Tank(400, 500, 'top');
+        tank2.text = artist.setColorFill(tank2.text, '#fff');
+        tank2.show(canvas1);
     </script>
 </body>
 </html>
