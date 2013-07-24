@@ -1,0 +1,40 @@
+# Magento
+app/etc/local.xml
+app/etc/local.xml.phpunit
+media
+var
+downloader/*
+tags
+TAGS
+
+# Mac
+.DS_Store
+
+# Magento debug module
+app/code/community/Magneto/
+app/design/frontend/base/default/layout/debug.xml
+app/design/frontend/base/default/template/debug/
+app/etc/modules/Magneto_Debug.xml
+skin/frontend/base/default/debug/
+
+# Inchoo firephp module
+app/code/community/Inchoo/
+app/etc/modules/Inchoo_Developer.xml
+
+# GoSolid Module Builder
+app/code/local/GoSolid/
+app/design/adminhtml/default/default/layout/darwin.xml
+app/design/adminhtml/default/default/template/darwin/
+app/etc/modules/GoSolid_Darwin.xml
+js/darwin/
+
+# Sublime Project settings
+julep.sublime-project
+julep.sublime-workspace
+
+# jIdea
+atlassian-ide-plugin.xml
+.idea
+
+#htaccess
+.htaccess
