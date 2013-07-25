@@ -1,15 +1,23 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>Battle City</title>
     <script type="text/javascript" src="js/libs/prototype.js"></script>
+    <script type="text/javascript" src="js/libs/fabric.js"></script>
+    <script type="text/javascript" src="js/speroteck/artist.js"></script>
     <link rel="stylesheet" type="text/css" href="css/speroteck.css"/>
 </head>
 <body>
-    <div id="canvasHolder">
-        <canvas id="layer1" width="800" height="600"></canvas>
-        <canvas id="layer2" width="800" height="600"></canvas>
-        <canvas id="layer3" width="800" height="600"></canvas>
-    </div>
+<div id="canvasHolder">
+    <canvas id="layer0" width="800" height="600"></canvas>
+    <canvas id="layer1" width="800" height="600"></canvas>
+    <canvas id="layer2" width="800" height="600"></canvas>
+</div>
+<script type="text/javascript">
+    var canvas0 = new fabric.Canvas('layer0');
+
+    var artist = new Speroteck.Artist({'fabric': fabric, 'canvas': canvas0});
+    artist.line([0, 0, 400, 400]);
+
+</script>
 </body>
 </html>

@@ -1,15 +1,25 @@
-#canvasHolder{
+#canvasHolder {
     margin: 0 auto;
     width: 800px;
     height: 600px;
     border: 1px #000 solid;
     position: relative;
 }
-#canvasHolder canvas{
+
+#canvasHolder canvas {
     width: 800px;
     height: 600px;
     position: absolute;
 }
-canvas#layer1{ z-index: 1;}
-canvas#layer2{ z-index: 2;}
-canvas#layer3{ z-index: 3;}
+
+canvas#layer0 {
+    z-index: 0;
+}
+
+canvas#layer1 {
+    z-index: 1;
+}
+
+canvas#layer2 {
+    z-index: 2;
+}
