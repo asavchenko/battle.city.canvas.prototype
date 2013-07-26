@@ -13,11 +13,22 @@
     <canvas id="layer2" width="800" height="600"></canvas>
 </div>
 <script type="text/javascript">
-    var canvas0 = new fabric.Canvas('layer0');
+    var canvas0 = new fabric.Canvas('layer0'),
+        x       = 400,
+        y       = 400,
+        alpha   = 0,
+        radius  = 400,
+        timer   = window.setInterval(function(){
+            if(alpha > 2 * Math.PI){
+              alpha -=  2 * Math.PI;
+            }
+            alpha += (Math.PI)/1800;
+            x = radius * Math.cos(alpha);
+            y = radius * Math.sin(alpha);
+            artist.line([400, 400, 400 + x, 400 + y]);
+        },10);
 
     var artist = new Speroteck.Artist({'fabric': fabric, 'canvas': canvas0});
-    artist.line([0, 0, 400, 400]);
-
 </script>
 </body>
 </html>
