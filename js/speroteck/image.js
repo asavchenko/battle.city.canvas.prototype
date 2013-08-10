@@ -1,11 +1,10 @@
 /**
- * Describe me!!!!!!
+ * Image object
  *
- * @category     Julep
- * @package      Julep_Module
- * @copyright    Copyright (c) 2013 Julep (www.julep.com)
- * @author       Julep team (dev@julep.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category     Speroteck
+ * @package      Speroteck_Image
+ * @copyright    Copyright (c) 2013 Speroteck Inc. (www.speroteck.com)
+ * @author       Speroteck team (dev@speroteck.com)
  */
 
 if (typeof window.Speroteck == 'undefined') {
