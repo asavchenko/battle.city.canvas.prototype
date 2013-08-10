@@ -1,0 +1,26 @@
+$ceilWidth: 32px;
+$ceilHeight: 32px;
+$numCeilsHor: 20;
+$numCeilsVer: 20;
+$canvasWidth: $ceilWidth*$numCeilsHor;
+$canvasHeight: $ceilHeight*$numCeilsVer;
+@mixin canvas-dimensions {
+  width: $canvasWidth;
+  height: $canvasHeight;
+}
+
+#canvasHolder {
+  margin: 0 auto;
+  @include canvas-dimensions;
+  border: 1px #000 solid;
+  position: relative;
+  canvas {
+    @include canvas-dimensions;
+    position: absolute;
+    @for $i from 0 through 2 {
+      #layer-#{$i} {
+        z-index: $i;
+      }
+    }
+  }
+}
