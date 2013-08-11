@@ -8,11 +8,13 @@ $canvasHeight: $ceilHeight*$numCeilsVer;
   width: $canvasWidth;
   height: $canvasHeight;
 }
-
+body {
+  background-color: #000000;
+}
 #canvasHolder {
   margin: 0 auto;
   @include canvas-dimensions;
-  border: 1px #000 solid;
+  border: 1px #034013 solid;
   position: relative;
   canvas {
     @include canvas-dimensions;

@@ -1,8 +1,11 @@
+body {
+  background-color: #000000; }
+
 #canvasHolder {
   margin: 0 auto;
   width: 640px;
   height: 640px;
-  border: 1px #000 solid;
+  border: 1px #034013 solid;
   position: relative; }
   #canvasHolder canvas {
     width: 640px;
