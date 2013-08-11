@@ -7,6 +7,11 @@
  * @author       Speroteck team (dev@speroteck.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-Speroteck.Water = Class.create(Speroteck.Obstacle, {
+/**
+ * @namespace Speroteck.Object.Obstacle
+ * @class Speroteck.Object.Obstacle.Water
+ * @extends Speroteck.Object.Obstacle
+ */
+Speroteck.Object.Obstacle.Water = Class.create(Speroteck.Object.Obstacle, {
     imgId: 'speroteck-image-water'
 });

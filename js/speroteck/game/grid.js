@@ -11,22 +11,18 @@
  * Put full description here
  *
  * @category    Speroteck
- * @package     Speroteck_Grid
+ * @package     Speroteck_Game
  * @author      Speroteck team (dev@speroteck.com)
  */
 
-if (typeof window.Speroteck == 'undefined') {
-    window.Speroteck = {};
-}
-
-Object.extend(Speroteck.config, {
-    objMap: [0, Speroteck.Brick, Speroteck.Grass, Speroteck.Water]
+Object.extend(Speroteck.Game.config, {
+    objMap: [0, Speroteck.Object.Obstacle.Brick, Speroteck.Object.Obstacle.Grass, Speroteck.Object.Obstacle.Water]
 });
 /**
- * @namespace Speroteck
- * @class Speroteck.Grid
+ * @namespace Speroteck.Game
+ * @class Speroteck.Game.Grid
  */
-Speroteck.Grid = Class.create({
+Speroteck.Game.Grid = Class.create({
     /**
      * url for ajax action
      * @type String
@@ -62,7 +58,7 @@ Speroteck.Grid = Class.create({
      * global config object, wrapped in Speroteck Namespace
      * @type Object
      */
-    config: Speroteck.config,
+    config: Speroteck.Game.config,
 
     /**
      * array of canvases on the page
@@ -143,5 +139,11 @@ Speroteck.Grid = Class.create({
                 }
             }
         }
+        player = new Speroteck.Game.Player({
+            'tank': new Speroteck.Object.Tank.M5({
+                'canvas': this.canvases[1],
+                'x': this.config.ceilWidth2 + hl/2 * this.config.ceilWidth,
+                'y': this.config.ceilWidth2 +(vl -1) * this.config.ceilWidth})
+        });
     }
 });

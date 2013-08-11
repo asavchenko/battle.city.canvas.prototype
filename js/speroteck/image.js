@@ -26,9 +26,15 @@ Speroteck.Image = Class.create({
      */
     canvas: undefined,
 
+    /**
+     * coordinates
+     */
     x: 0, y: 0, angle: 0,
 
-    config: Speroteck.config,
+    /**
+     * global config injection
+     */
+    config: Speroteck.Game.config,
 
     /**
      *
@@ -45,7 +51,6 @@ Speroteck.Image = Class.create({
 
     /**
      * (html)
-     * <canvas id="c"></canvas>
      * <img src="my_image.png" id="my-image">
      * (js)
      * imgElement = $('my-img') || 'my-img;
@@ -94,10 +99,11 @@ Speroteck.Image = Class.create({
      * @param y Number
      * @param angle Number
      */
-    show: function (x, y, angle) {
+    move: function (x, y, angle) {
         this.imgData.set({'left': x, 'top': y});
         if (typeof angle !== 'undefined') {
             this.imgData.set('angle', angle);
         }
+        this.canvas.renderAll();
     }
 });

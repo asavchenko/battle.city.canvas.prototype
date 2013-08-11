@@ -1,18 +1,18 @@
 /**
- * Obstacle object
+ * Tank object
  *
  * @category     Speroteck
- * @package      Speroteck_Obstacle
+ * @package      Speroteck_Tank
  * @copyright    Copyright (c) 2013 Speroteck Inc. (www.speroteck.com)
  * @author       Speroteck team (dev@speroteck.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
- * @namespace Speroteck.Object
- * @extends Speroteck.Object
- * @class Speroteck.Object.Obstacle
+ * @namespace Speroteck.Object.Tank
+ * @extends Speroteck.Object.Tank
+ * @class Speroteck.Object.Tank.M5
  */
-Speroteck.Object.Obstacle = Class.create(Speroteck.Object, {
-
+Speroteck.Object.Tank.M5 = Class.create(Speroteck.Object.Tank, {
+    imgId: 'speroteck-image-player'
 });
