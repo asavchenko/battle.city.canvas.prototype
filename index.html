@@ -28,7 +28,11 @@
     var canvas2 = new fabric.StaticCanvas('layer-2', {
     });
 
-    var grid = new Speroteck.Grid({'canvases': [canvas0, canvas1, canvas2]});
+    var grid = new Speroteck.Grid({
+        'canvases': [canvas0, canvas1, canvas2],
+        'levelUrl': 'http://battle-city.dev/index.php',//here has to be an url to your local web-server
+        'level': 0
+    });
 </script>
 </body>
 </html>

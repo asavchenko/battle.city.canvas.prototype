@@ -78,7 +78,8 @@ Speroteck.Image = Class.create({
     },
 
     /**
-     *
+     * destroy current image
+     * remove it from canvas and from the memory
      */
     destroy: function () {
         this.canvas.remove(this.imgData);
@@ -86,6 +87,8 @@ Speroteck.Image = Class.create({
     },
 
     /**
+     * show image object at (x, y)
+     * angle is optional
      *
      * @param x Number
      * @param y Number

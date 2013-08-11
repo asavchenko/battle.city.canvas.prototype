@@ -27,25 +27,64 @@ Object.extend(Speroteck.config, {
  * @class Speroteck.Grid
  */
 Speroteck.Grid = Class.create({
+    /**
+     * url for ajax action
+     * @type String
+     */
     levelUrl: '',
-    level: '',
+
+    /**
+     * current level #
+     * @type Number
+     */
+    level: 0,
+
+    /**
+     * array representation of data/level-#####.txt or map in ajax response
+     * @type Array
+     */
     data: [],
+
+    /**
+     * array representation of data/z-level-0000.txt zmap in ajax response
+     * @type Array
+     */
     zdata: [],
+
+    /**
+     * array representation of data/level-####.txt but if data contains just a 'Char' type
+     * as array ceil, imgData contains obstacle objects
+     * @type Array
+     */
     imgData: [],
+
+    /**
+     * global config object, wrapped in Speroteck Namespace
+     * @type Object
+     */
     config: Speroteck.config,
 
     /**
+     * array of canvases on the page
      * @type Array
      */
     canvases: undefined,
 
+    /**
+     * init actions go here
+     *
+     * @param options
+     */
     initialize: function(options) {
         this.canvases = options.canvases;
-        this.levelUrl = options.levelUrl || 'http://battle-city.dev/index.php';
-        this.level = options.level || '0';
+        this.levelUrl = options.levelUrl;
+        this.level = options.level || 0;
         this.loadLevel();
     },
 
+    /**
+     * Sends ajax request to the levelUrl
+     */
     loadLevel: function() {
         new Ajax.Request(this.levelUrl, {
             method: 'get',
@@ -54,6 +93,21 @@ Speroteck.Grid = Class.create({
         });
     },
 
+    /**
+     * Result should contain map and zmap data
+     * these are json encoded txt files:
+     * 010101
+     * 012301
+     * ...
+     * 133011
+     * where 1 is object code, so instead of 1 we will place js obstacle object
+     * the relations between code and js object are in this.config
+     *
+     * this is for map, for zmap is being used the similar idea, but now code it's a z-index
+     * We have 3 canvases on the page. canvas0 canvas1, canvas2
+     *
+     * @param response Object
+     */
     onComplete: function(response) {
         try {
             var result = response.responseText.evalJSON()
@@ -63,6 +117,9 @@ Speroteck.Grid = Class.create({
 
         if (result.map) {
             this.data = result.map.split('\n');
+        } else {
+            alert('Can\'t load level. Check levelUrl in the config params, check that file data/level-0000.txt exists...');
+            return;
         }
         if (result.zmap) {
             this.zdata = result.zmap.split('\n');
