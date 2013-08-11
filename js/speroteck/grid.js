@@ -20,7 +20,7 @@ if (typeof window.Speroteck == 'undefined') {
 }
 
 Object.extend(Speroteck.config, {
-    objMap: [0, Speroteck.Brick, Speroteck.Grass]
+    objMap: [0, Speroteck.Brick, Speroteck.Grass, Speroteck.Water]
 });
 /**
  * @namespace Speroteck

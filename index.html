@@ -8,6 +8,7 @@
     <script type="text/javascript" src="js/speroteck/obstacle.js"></script>
     <script type="text/javascript" src="js/speroteck/obstacle/brick.js"></script>
     <script type="text/javascript" src="js/speroteck/obstacle/grass.js"></script>
+    <script type="text/javascript" src="js/speroteck/obstacle/water.js"></script>
     <script type="text/javascript" src="js/speroteck/grid.js"></script>
     <link rel="stylesheet" type="text/css" href="css/speroteck.css"/>
 </head>
@@ -19,11 +20,13 @@
 </div>
 <img src="images/32/brick.png" id="speroteck-image-brick" style="display: none">
 <img src="images/32/grass.gif" id="speroteck-image-grass" style="display: none">
+<img src="images/32/water.png" id="speroteck-image-water" style="display: none">
 <script type="text/javascript">
     var canvas0 = new fabric.StaticCanvas('layer-0', {
+        backgroundColor: 'rgb(0,0,0)'
     });
     var canvas1 = new fabric.StaticCanvas('layer-1', {
-        backgroundColor: 'rgb(0,0,0)'
+
     });
     var canvas2 = new fabric.StaticCanvas('layer-2', {
     });
