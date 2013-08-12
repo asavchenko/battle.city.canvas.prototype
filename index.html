@@ -3,32 +3,55 @@
     <title>Battle City</title>
     <script type="text/javascript" src="js/libs/prototype.js"></script>
     <script type="text/javascript" src="js/libs/fabric.js"></script>
-    <script type="text/javascript" src="js/speroteck/artist.js"></script>
+    <script type="text/javascript" src="js/libs/events.js"></script>
+    <script type="text/javascript" src="js/speroteck/game.js"></script>
+    <script type="text/javascript" src="js/speroteck/game/config.js"></script>
+    <script type="text/javascript" src="js/speroteck/image.js"></script>
+    <script type="text/javascript" src="js/speroteck/object.js"></script>
+    <script type="text/javascript" src="js/speroteck/obstacle.js"></script>
+    <script type="text/javascript" src="js/speroteck/obstacle/brick.js"></script>
+    <script type="text/javascript" src="js/speroteck/obstacle/grass.js"></script>
+    <script type="text/javascript" src="js/speroteck/obstacle/water.js"></script>
+    <script type="text/javascript" src="js/speroteck/tank.js"></script>
+    <script type="text/javascript" src="js/speroteck/tank/m1.js"></script>
+    <script type="text/javascript" src="js/speroteck/tank/m2.js"></script>
+    <script type="text/javascript" src="js/speroteck/tank/m3.js"></script>
+    <script type="text/javascript" src="js/speroteck/tank/m4.js"></script>
+    <script type="text/javascript" src="js/speroteck/tank/m5.js"></script>
+    <script type="text/javascript" src="js/speroteck/game/board.js"></script>
+    <script type="text/javascript" src="js/speroteck/game/player.js"></script>
+    <script type="text/javascript" src="js/speroteck/game/master.js"></script>
     <link rel="stylesheet" type="text/css" href="css/speroteck.css"/>
 </head>
 <body>
 <div id="canvasHolder">
-    <canvas id="layer0" width="800" height="600"></canvas>
-    <canvas id="layer1" width="800" height="600"></canvas>
-    <canvas id="layer2" width="800" height="600"></canvas>
+    <canvas id="layer-0" width="640" height="640"></canvas>
+    <canvas id="layer-1" width="640" height="640"></canvas>
+    <canvas id="layer-2" width="640" height="640"></canvas>
 </div>
+<img src="images/32/brick.png" id="speroteck-image-brick" style="display: none">
+<img src="images/32/grass.gif" id="speroteck-image-grass" style="display: none">
+<img src="images/32/water.png" id="speroteck-image-water" style="display: none">
+<img src="images/32/player.png" id="speroteck-image-player" style="display: none">
+<img src="images/32/enemy-1.png" id="speroteck-image-enemy-1" style="display: none">
+<img src="images/32/enemy-2.png" id="speroteck-image-enemy-2" style="display: none">
+<img src="images/32/enemy-3.png" id="speroteck-image-enemy-3" style="display: none">
+<img src="images/32/enemy-4.png" id="speroteck-image-enemy-4" style="display: none">
 <script type="text/javascript">
-    var canvas0 = new fabric.Canvas('layer0'),
-        x       = 400,
-        y       = 400,
-        alpha   = 0,
-        radius  = 400,
-        timer   = window.setInterval(function(){
-            if(alpha > 2 * Math.PI){
-              alpha -=  2 * Math.PI;
-            }
-            alpha += (Math.PI)/1800;
-            x = radius * Math.cos(alpha);
-            y = radius * Math.sin(alpha);
-            artist.line([400, 400, 400 + x, 400 + y]);
-        },10);
+        var canvas0 = new fabric.StaticCanvas('layer-0', {
+            backgroundColor: 'rgb(0,0,0)'
+        });
+        var canvas1 = new fabric.StaticCanvas('layer-1', {
 
-    var artist = new Speroteck.Artist({'fabric': fabric, 'canvas': canvas0});
+        });
+        var canvas2 = new fabric.StaticCanvas('layer-2', {
+        });
+
+        board = new Speroteck.Game.Board({
+            'canvases': [canvas0, canvas1, canvas2],
+            'levelUrl': 'http://battle-city.dev/index.php',//here has to be an url to your local web-server
+            'level': 0
+        });
 </script>
 </body>
 </html>

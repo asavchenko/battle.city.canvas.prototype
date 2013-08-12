@@ -1,25 +1,19 @@
+body {
+  background-color: #000000; }
+
 #canvasHolder {
-    margin: 0 auto;
-    width: 800px;
-    height: 600px;
-    border: 1px #000 solid;
-    position: relative;
-}
-
-#canvasHolder canvas {
-    width: 800px;
-    height: 600px;
-    position: absolute;
-}
-
-canvas#layer0 {
-    z-index: 0;
-}
-
-canvas#layer1 {
-    z-index: 1;
-}
-
-canvas#layer2 {
-    z-index: 2;
-}
+  margin: 0 auto;
+  width: 640px;
+  height: 640px;
+  border: 1px #034013 solid;
+  position: relative; }
+  #canvasHolder canvas {
+    width: 640px;
+    height: 640px;
+    position: absolute; }
+    #canvasHolder canvas #layer-0 {
+      z-index: 0; }
+    #canvasHolder canvas #layer-1 {
+      z-index: 1; }
+    #canvasHolder canvas #layer-2 {
+      z-index: 2; }
