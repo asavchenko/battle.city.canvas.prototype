@@ -63,7 +63,6 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
            this.setDirection(this.config.upDirection);
         } else {
             this.dispatchEvent('tank_move_up');
-            this.move(this.config.upDirection);
         }
 
         return this;
@@ -78,7 +77,6 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
             this.setDirection(this.config.downDirection);
         } else {
             this.dispatchEvent('tank_move_down');
-            this.move(this.config.downDirection);
         }
 
         return this;
@@ -93,7 +91,6 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
             this.setDirection(this.config.leftDirection);
         } else {
             this.dispatchEvent('tank_move_left');
-            this.move(this.config.leftDirection);
         }
 
         return this;
@@ -108,7 +105,6 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
             this.setDirection(this.config.rightDirection);
         } else {
             this.dispatchEvent('tank_move_right');
-            this.move(this.config.rightDirection);
         }
 
         return this;
