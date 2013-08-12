@@ -12,7 +12,8 @@ if (typeof window.Speroteck == 'undefined') {
 }
 
 /**
- *
+ * @requires fabric
+ * @namespace Speroteck.Image
  * @class Speroteck.Image
  */
 Speroteck.Image = Class.create({

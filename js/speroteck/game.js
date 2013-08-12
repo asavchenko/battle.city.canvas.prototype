@@ -12,11 +12,10 @@ if (typeof window.Speroteck == 'undefined') {
 }
 
 /**
+ * @module game
  * @class Speroteck.Game
- * @namespace Speroteck
+ * @namespace Speroteck.Game
  */
 Speroteck.Game = Class.create({
-    initialize: function(options) {
 
-    }
 });

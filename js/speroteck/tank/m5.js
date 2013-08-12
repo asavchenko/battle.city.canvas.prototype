@@ -9,7 +9,6 @@
  */
 
 /**
- * @namespace Speroteck.Object.Tank
  * @extends Speroteck.Object.Tank
  * @class Speroteck.Object.Tank.M5
  */

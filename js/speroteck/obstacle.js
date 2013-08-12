@@ -9,7 +9,8 @@
  */
 
 /**
- * @namespace Speroteck.Object
+ * @requires object
+ * @namespace Speroteck.Object.Obstacle
  * @extends Speroteck.Object
  * @class Speroteck.Object.Obstacle
  */

@@ -13,10 +13,13 @@ if (typeof window.Speroteck == 'undefined') {
 }
 
 /**
- * @namespace Speroteck
+ * @requires Event.Publisher
+ * @extends Event.Publisher
+ * @requires image
+ * @namespace Speroteck.Object
  * @class Speroteck.Object
  */
-Speroteck.Object = Class.create({
+Speroteck.Object = Class.create(Event.Publisher, {
     /**
      * @type Speroteck.Image
      */
@@ -40,6 +43,7 @@ Speroteck.Object = Class.create({
     /**
      * init actions go here
      * @param options {*}
+     * @constructor
      */
     initialize: function(options) {
         options = options || {};

@@ -8,7 +8,11 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-if (typeof Speroteck.Game.config == 'undefined') {
+if (typeof Speroteck.Game.config === 'undefined') {
+    /**
+     * @global
+     * @type {{}}
+     */
     Speroteck.Game.config = {};
 }
 

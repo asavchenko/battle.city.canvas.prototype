@@ -1,5 +1,5 @@
 /**
- * Implements grid logic
+ * Implements board logic
  *
  * @category    Speroteck
  * @package     Speroteck_Grid
@@ -19,10 +19,11 @@ Object.extend(Speroteck.Game.config, {
     objMap: [0, Speroteck.Object.Obstacle.Brick, Speroteck.Object.Obstacle.Grass, Speroteck.Object.Obstacle.Water]
 });
 /**
- * @namespace Speroteck.Game
- * @class Speroteck.Game.Grid
+ * @requires Speroteck.Game
+ * @namespace Speroteck.Game.Board
+ * @class Speroteck.Game.Board
  */
-Speroteck.Game.Grid = Class.create({
+Speroteck.Game.Board = Class.create(Event.Broker, {
     /**
      * url for ajax action
      * @type String
@@ -65,6 +66,16 @@ Speroteck.Game.Grid = Class.create({
      * @type Array
      */
     canvases: undefined,
+
+    /**
+     *
+     */
+    player: undefined,
+
+    /**
+     *
+     */
+    gameMaster: undefined,
 
     /**
      * init actions go here
@@ -139,11 +150,16 @@ Speroteck.Game.Grid = Class.create({
                 }
             }
         }
-        player = new Speroteck.Game.Player({
+        this.player = new Speroteck.Game.Player({
             'tank': new Speroteck.Object.Tank.M5({
                 'canvas': this.canvases[1],
+                'board': this,
                 'x': this.config.ceilWidth2 + hl/2 * this.config.ceilWidth,
                 'y': this.config.ceilWidth2 +(vl -1) * this.config.ceilWidth})
         });
+
+        this.gameMaster = new Speroteck.Game.Master({
+            'board': this
+        })
     }
 });

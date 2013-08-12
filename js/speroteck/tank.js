@@ -9,7 +9,8 @@
  */
 
 /**
- * @namespace Speroteck.Object
+ * @requires object
+ * @namespace Speroteck.Object.Tank
  * @extends Speroteck.Object
  * @class Speroteck.Object.Tank
  */
@@ -29,6 +30,8 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      */
     fireRate: 0,
 
+    board: undefined,
+
     /**
      * {@inheritdoc}
      * @param $super
@@ -37,7 +40,18 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     initialize: function($super, options) {
         this.speed = options.speed || 5;
         this.armor = options.armor || 1;
+        this.board = options.board;
+        this.registerEvents();
         $super(options);
+    },
+
+    /**
+     *
+     */
+    registerEvents: function() {
+        if (typeof this.board === 'object') {
+            this.board.registerEventsPublisher(['tank_move_up', 'tank_move_down', 'tank_move_left', 'tank_move_right'], this)
+        }
     },
 
     /**
@@ -48,7 +62,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
         if (this.angle !== this.config.upDirection) {
            this.setDirection(this.config.upDirection);
         } else {
-            Event.fire(this, 'tank:up');
+            this.dispatchEvent('tank_move_up');
             this.move(this.config.upDirection);
         }
 
@@ -63,7 +77,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
         if (this.angle !== this.config.downDirection) {
             this.setDirection(this.config.downDirection);
         } else {
-            Event.fire(this, 'tank:down');
+            this.dispatchEvent('tank_move_down');
             this.move(this.config.downDirection);
         }
 
@@ -78,7 +92,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
         if (this.angle !== this.config.leftDirection) {
             this.setDirection(this.config.leftDirection);
         } else {
-            Event.fire(this, 'tank:left');
+            this.dispatchEvent('tank_move_left');
             this.move(this.config.leftDirection);
         }
 
@@ -93,7 +107,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
         if (this.angle !== this.config.rightDirection) {
             this.setDirection(this.config.rightDirection);
         } else {
-            Event.fire(this, 'tank:right');
+            this.dispatchEvent('tank_move_right');
             this.move(this.config.rightDirection);
         }
 
@@ -120,6 +134,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      */
     destroy: function() {
         this.imageObj.destroy();
+        this.dispatchEvent('tank_destroy');
 
         return this;
     },
@@ -156,9 +171,5 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     setDirection: function(direction) {
         this.angle = direction || this.angle;
         this.imageObj.move(this.x, this.y, this.angle);
-    },
-
-    dispatchEvent: function(event) {
-//        console.log(event);
     }
 });
