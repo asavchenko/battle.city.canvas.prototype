@@ -38,7 +38,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      * @param options
      */
     initialize: function($super, options) {
-        this.speed = options.speed || 5;
+        this.speed = options.speed || 8;
         this.armor = options.armor || 1;
         this.board = options.board;
         this.registerEvents();
@@ -63,6 +63,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
            this.setDirection(this.config.upDirection);
         } else {
             this.dispatchEvent('tank_move_up');
+
         }
 
         return this;
@@ -140,19 +141,35 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      * @param direction
      * @returns {*}
      */
-    move: function(direction) {
+    move: function(direction, delta) {
         switch (direction) {
             case this.config.upDirection:
-                this.y -= this.speed;
+                if (typeof delta === 'undefined' ){
+                    this.y -= this.speed;
+                } else {
+                    this.y -= delta;
+                }
                 break;
             case this.config.leftDirection:
-                this.x -= this.speed;
+                if (typeof delta === 'undefined' ){
+                    this.x -= this.speed;
+                } else {
+                    this.x -= delta;
+                }
                 break;
             case this.config.downDirection:
-                this.y += this.speed;
+                if (typeof delta === 'undefined' ){
+                    this.y += this.speed;
+                } else {
+                    this.y += delta;
+                }
                 break;
             case this.config.rightDirection:
-                this.x += this.speed;
+                if (typeof delta === 'undefined' ){
+                    this.x += this.speed;
+                } else {
+                    this.x += delta;
+                }
                 break;
         }
         this.imageObj.move(this.x, this.y, this.angle);
