@@ -78,6 +78,16 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
     gameMaster: undefined,
 
     /**
+     *
+     */
+    boardWidth: undefined,
+
+    /**
+     *
+     */
+    boardHeight: undefined,
+
+    /**
      * init actions go here
      *
      * @param options
@@ -161,5 +171,27 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
         this.gameMaster = new Speroteck.Game.Master({
             'board': this
         })
+    },
+
+    /**
+     *
+     * @returns {*}
+     */
+    getBoardWidth: function(){
+        if (typeof this.boardWidth === 'undefined') {
+            this.boardWidth = this.config.ceilWidth*this.config.numCellHor;
+        }
+        return this.boardWidth;
+    },
+
+    /**
+     *
+     * @returns {*}
+     */
+    getBoardHeight: function(){
+        if (typeof this.boardHeight === 'undefined') {
+            this.boardHeight = this.config.ceilHeight*this.config.numCellVer;
+        }
+        return this.boardHeight;
     }
 });

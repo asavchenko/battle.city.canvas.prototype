@@ -17,6 +17,8 @@ if (typeof Speroteck.Game.config === 'undefined') {
 }
 
 Object.extend(Speroteck.Game.config, {
+    numCellHor: 20,
+    numCellVer: 20,
     ceilWidth: 32,
     ceilHeight: 32,
     ceilWidth2: 16,
