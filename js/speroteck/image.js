@@ -60,7 +60,7 @@ Speroteck.Image = Class.create({
      */
     setImage: function (imgElement) {
         this.imgData = new fabric.Group([typeof imgElement === 'undefined'
-            ? fabric.Rect({'x': this.x, 'y': this.y, 'width': this.config.ceilWidth, 'height': this.config.ceilHeight})
+            ? fabric.Rect({'x': this.x, 'y': this.y, 'width': this.config.cellWidth, 'height': this.config.cellHeight})
             : new fabric.Image($(imgElement), {
             left: this.x,
             top: this.y,
@@ -101,10 +101,24 @@ Speroteck.Image = Class.create({
      * @param angle Number
      */
     move: function (x, y, angle) {
-        this.imgData.set({'left': x, 'top': y});
-        if (typeof angle !== 'undefined') {
-            this.imgData.set('angle', angle);
+        var dirty = false;
+        if (this.imgData.get('left') != x) {
+            this.imgData.set('left', x);
+            dirty = true;
         }
-        this.canvas.renderAll();
+
+        if (this.imgData.get('top') != y) {
+            this.imgData.set('top', y);
+            dirty = true;
+        }
+
+        if (typeof angle !== 'undefined' && this.imgData.get('angle') != angle) {
+            this.imgData.set('angle', angle);
+            dirty = true;
+        }
+
+        if (dirty) {
+            this.canvas.renderAll();
+        }
     }
 });

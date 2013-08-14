@@ -12,5 +12,13 @@
  * @extends Speroteck.Object.Obstacle
  */
 Speroteck.Object.Obstacle.Water = Class.create(Speroteck.Object.Obstacle, {
-    imgId: 'speroteck-image-water'
+    /**
+     *
+     */
+    imgId: 'speroteck-image-water',
+
+    /**
+     *
+     */
+    type: 'water'
 });

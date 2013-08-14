@@ -30,7 +30,15 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      */
     fireRate: 0,
 
+    /**
+     *
+     */
     board: undefined,
+
+    /**
+     *
+     */
+    type: 'tank',
 
     /**
      * {@inheritdoc}
@@ -38,7 +46,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      * @param options
      */
     initialize: function($super, options) {
-        this.speed = options.speed || 5;
+        this.speed = options.speed || 8;
         this.armor = options.armor || 1;
         this.board = options.board;
         this.registerEvents();
@@ -49,9 +57,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      *
      */
     registerEvents: function() {
-        if (typeof this.board === 'object') {
-            this.board.registerEventsPublisher(['tank_move_up', 'tank_move_down', 'tank_move_left', 'tank_move_right'], this)
-        }
+        this.board.registerEventsPublisher(['tank_move_up', 'tank_move_down', 'tank_move_left', 'tank_move_right'], this)
     },
 
     /**
@@ -140,21 +146,32 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      * @param direction
      * @returns {*}
      */
-    move: function(direction) {
+    move: function(direction, delta) {
         switch (direction) {
             case this.config.upDirection:
-                this.y -= this.speed;
+                this.y -= (typeof delta === 'undefined' ? this.speed : delta);
                 break;
             case this.config.leftDirection:
-                this.x -= this.speed;
+                this.x -= (typeof delta === 'undefined' ? this.speed : delta);
                 break;
             case this.config.downDirection:
-                this.y += this.speed;
+                this.y += (typeof delta === 'undefined' ? this.speed : delta);
                 break;
             case this.config.rightDirection:
-                this.x += this.speed;
+                this.x += (typeof delta === 'undefined' ? this.speed : delta);
                 break;
         }
+
+        this.reDraw();
+
+        return this;
+    },
+
+    /**
+     *
+     * @returns {*}
+     */
+    reDraw: function() {
         this.imageObj.move(this.x, this.y, this.angle);
 
         return this;

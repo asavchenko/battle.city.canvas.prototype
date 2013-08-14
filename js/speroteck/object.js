@@ -41,6 +41,11 @@ Speroteck.Object = Class.create(Event.Publisher, {
     imgId: '',
 
     /**
+     *
+     */
+    type: '',
+
+    /**
      * init actions go here
      * @param options {*}
      * @constructor

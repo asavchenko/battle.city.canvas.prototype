@@ -50,7 +50,7 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
 
     /**
      * array representation of data/level-####.txt but if data contains just a 'Char' type
-     * as array ceil, imgData contains obstacle objects
+     * as array cell, imgData contains obstacle objects
      * @type Array
      */
     imgData: [],
@@ -76,6 +76,16 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
      *
      */
     gameMaster: undefined,
+
+    /**
+     *
+     */
+    width: undefined,
+
+    /**
+     *
+     */
+    height: undefined,
 
     /**
      * init actions go here
@@ -138,8 +148,8 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
                 if (parseInt(this.data[i][j])) {
                     this.imgData[i][j] = (typeof this.config.objMap[parseInt(this.data[i][j])] !== 'undefined')
                         ? (new this.config.objMap[parseInt(this.data[i][j])]({
-                            'x': this.config.ceilWidth2 + j * this.config.ceilWidth,
-                            'y': this.config.ceilHeight2 + i * this.config.ceilHeight,
+                            'x': this.config.cellWidth2 + j * this.config.cellWidth,
+                            'y': this.config.cellHeight2 + i * this.config.cellHeight,
                             'canvas': (typeof this.canvases[parseInt(this.zdata[i][j])] !== 'undefined'
                                 ? this.canvases[parseInt(this.zdata[i][j])]
                                 : this.canvases[0])
@@ -154,12 +164,36 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
             'tank': new Speroteck.Object.Tank.M5({
                 'canvas': this.canvases[1],
                 'board': this,
-                'x': this.config.ceilWidth2 + hl/2 * this.config.ceilWidth,
-                'y': this.config.ceilWidth2 +(vl -1) * this.config.ceilWidth})
+                'x': this.config.cellWidth2 + hl/2 * this.config.cellWidth,
+                'y': this.config.cellWidth2 +(vl -1) * this.config.cellWidth})
         });
 
         this.gameMaster = new Speroteck.Game.Master({
             'board': this
         })
+    },
+
+    /**
+     *
+     * @returns {*}
+     */
+    getWidth: function() {
+        if (typeof this.width === 'undefined') {
+            this.width = this.config.numCellsHor * this.config.cellWidth;
+        }
+
+        return this.width;
+    },
+
+    /**
+     *
+     * @returns {*}
+     */
+    getHeight: function() {
+        if (typeof this.height === 'undefined') {
+            this.height = this.config.numCellsVer * this.config.cellHeight;
+        }
+
+        return this.height;
     }
 });
