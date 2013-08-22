@@ -12,5 +12,13 @@
  * @class Speroteck.Obstacle.Brick
  */
 Speroteck.Object.Obstacle.Brick = Class.create(Speroteck.Object.Obstacle, {
-    imgId: 'speroteck-image-brick'
+    /**
+     *
+     */
+    imgId: 'speroteck-image-brick',
+
+    /**
+     *
+     */
+    type: 'brick'
 });

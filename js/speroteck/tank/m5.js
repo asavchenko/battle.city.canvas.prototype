@@ -13,5 +13,6 @@
  * @class Speroteck.Object.Tank.M5
  */
 Speroteck.Object.Tank.M5 = Class.create(Speroteck.Object.Tank, {
-    imgId: 'speroteck-image-player'
+    imgId: 'speroteck-image-player',
+    speed: 4
 });

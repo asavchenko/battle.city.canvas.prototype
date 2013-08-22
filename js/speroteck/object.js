@@ -32,6 +32,7 @@ Speroteck.Object = Class.create(Event.Publisher, {
 
     /**
      * inject global config
+     * @type {Speroteck.Game.config}
      */
     config: Speroteck.Game.config,
 
@@ -41,12 +42,47 @@ Speroteck.Object = Class.create(Event.Publisher, {
     imgId: '',
 
     /**
+     *
+     */
+    type: '',
+
+    /**
+     *
+     */
+    canvas: undefined,
+
+    /**
+     *
+     */
+    width: 0,
+
+    /**
+     *
+     */
+    height: 0,
+
+    /**
+     *
+     */
+    width2: 0,
+
+    /**
+     *
+     */
+    height2: 0,
+
+    /**
      * init actions go here
      * @param options {*}
      * @constructor
      */
     initialize: function(options) {
         options = options || {};
+        this.width = options.width || this.config.cellWidth;
+        this.height = options.height || this.config.cellHeight;
+        this.width2 = this.width/2;
+        this.height2 = this.height/2;
+
         this.x = options.x || 0;
         this.y = options.y || 0;
         this.canvas = options.canvas;
@@ -56,7 +92,7 @@ Speroteck.Object = Class.create(Event.Publisher, {
                 'canvas': options.canvas,
                 'imgElement': this.imgId,
                 'x': options.hasOwnProperty('x') ? options.x : 0,
-                'y': options.hasOwnProperty('y') ? options.y: 0
+                'y': options.hasOwnProperty('y') ? options.y : 0
             })});
         }
 
