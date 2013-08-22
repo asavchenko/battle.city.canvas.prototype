@@ -12,5 +12,6 @@
  * @class Speroteck.Object.Tank.M4
  */
 Speroteck.Object.Tank.M4 = Class.create(Speroteck.Object.Tank, {
-    imgId: 'speroteck-image-enemy-4'
+    imgId: 'speroteck-image-enemy-4',
+    speed: 1
 });
