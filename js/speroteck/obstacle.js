@@ -15,5 +15,46 @@
  * @class Speroteck.Object.Obstacle
  */
 Speroteck.Object.Obstacle = Class.create(Speroteck.Object, {
+    /**
+     *
+     * @returns {math.Line}
+     */
+    getBottomLine: function() {
+        return new this.config.math.Line([
+            this.x - this.width2, this.y + this.height2,
+            this.x + this.width2, this.y + this.height2
+        ]);
+    },
 
+    /**
+     *
+     * @returns {math.Line}
+     */
+    getTopLine: function() {
+        return new this.config.math.Line([
+            this.x - this.width2, this.y - this.height2,
+            this.x + this.width2, this.y - this.height2
+        ]);
+    },
+    /**
+     *
+     * @returns {math.Line}
+     */
+    getRightLine: function() {
+        return new this.config.math.Line([
+            this.x + this.width2, this.y - this.height2,
+            this.x + this.width2, this.y + this.height2
+        ]);
+    },
+
+    /**
+     *
+     * @returns {math.Line}
+     */
+    getLeftLine: function() {
+        return new this.config.math.Line([
+            this.x - this.width2, this.y - this.height2,
+            this.x - this.width2, this.y + this.height2
+        ]);
+    }
 });

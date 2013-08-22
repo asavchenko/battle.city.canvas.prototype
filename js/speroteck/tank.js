@@ -41,15 +41,24 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     type: 'tank',
 
     /**
+     * 
+     */
+    stopped: false,
+
+    /**
      * {@inheritdoc}
      * @param $super
      * @param options
      */
     initialize: function($super, options) {
-        this.speed = options.speed || 8;
-        this.armor = options.armor || 1;
+        options = options || {};
+        this.speed = options.speed || this.speed;
+        this.armor = options.armor || this.armor;
         this.board = options.board;
+        this.stopped = false;
+
         this.registerEvents();
+        Object.extend(options, {'width': this.config.cellWidth -1, 'height': this.config.cellHeight -1});
         $super(options);
     },
 
@@ -66,6 +75,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      */
     up: function() {
         if (this.angle !== this.config.upDirection) {
+           this.setStopped(false);
            this.setDirection(this.config.upDirection);
         } else {
             this.dispatchEvent('tank_move_up');
@@ -81,6 +91,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     down: function() {
         if (this.angle !== this.config.downDirection) {
             this.setDirection(this.config.downDirection);
+            this.setStopped(false);
         } else {
             this.dispatchEvent('tank_move_down');
         }
@@ -95,6 +106,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     left: function() {
         if (this.angle !== this.config.leftDirection) {
             this.setDirection(this.config.leftDirection);
+            this.setStopped(false);
         } else {
             this.dispatchEvent('tank_move_left');
         }
@@ -109,6 +121,7 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     right: function() {
         if (this.angle !== this.config.rightDirection) {
             this.setDirection(this.config.rightDirection);
+            this.setStopped(false);
         } else {
             this.dispatchEvent('tank_move_right');
         }
@@ -146,19 +159,19 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      * @param direction
      * @returns {*}
      */
-    move: function(direction, delta) {
+    move: function(direction) {
         switch (direction) {
             case this.config.upDirection:
-                this.y -= (typeof delta === 'undefined' ? this.speed : delta);
+                this.y -= this.speed;
                 break;
             case this.config.leftDirection:
-                this.x -= (typeof delta === 'undefined' ? this.speed : delta);
+                this.x -= this.speed;
                 break;
             case this.config.downDirection:
-                this.y += (typeof delta === 'undefined' ? this.speed : delta);
+                this.y += this.speed;
                 break;
             case this.config.rightDirection:
-                this.x += (typeof delta === 'undefined' ? this.speed : delta);
+                this.x += this.speed;
                 break;
         }
 
@@ -184,5 +197,83 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     setDirection: function(direction) {
         this.angle = direction || this.angle;
         this.imageObj.move(this.x, this.y, this.angle);
+    },
+
+    /**
+     *
+     * @returns {{l1: math.Line, l2: math.Line}}
+     */
+    getLineTracesUp: function() {
+        var line1 = new this.config.math.Line([
+            this.x - this.width2, this.y - this.height2,
+            this.x - this.width2, this.y - this.height2 - this.speed]);
+        var line2 = new this.config.math.Line([
+            this.x + this.width2, this.y - this.height2,
+            this.x + this.width2, this.y - this.height2 - this.speed]);
+
+        return {l1: line1, l2: line2};
+    },
+
+    /**
+     *
+     * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
+     */
+    getLineTracesDown: function() {
+        var line1 = new this.config.math.Line([
+            this.x - this.width2, this.y + this.height2,
+            this.x - this.width2, this.y + this.height2 + this.speed]);
+        var line2 = new this.config.math.Line([
+            this.x + this.width2, this.y + this.height2,
+            this.x + this.width2, this.y + this.height2 + this.speed]);
+
+        return {l1: line1, l2: line2};
+    },
+
+    /**
+     *
+     * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
+     */
+    getLineTracesLeft: function() {
+        var line1 = new this.config.math.Line([
+            this.x - this.width2,            this.y - this.height2,
+            this.x - this.width2-this.speed, this.y - this.height2]);
+        var line2 = new this.config.math.Line([
+            this.x - this.width2,            this.y + this.height2,
+            this.x - this.width2-this.speed, this.y + this.height2]);
+
+        return {l1: line1, l2: line2};
+    },
+
+    /**
+     *
+     * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
+     */
+    getLineTracesRight: function() {
+        var line1 = new this.config.math.Line([
+            this.x + this.width2,              this.y - this.height2,
+            this.x + this.width2 + this.speed, this.y - this.height2]);
+        var line2 = new this.config.math.Line([
+            this.x + this.width2,              this.y + this.height2,
+            this.x + this.width2 + this.speed, this.y + this.height2]);
+
+        return {l1: line1, l2: line2};
+    },
+
+    /**
+     *
+     * @param value {boolean}
+     * @returns {*}
+     */
+    setStopped: function(value) {
+        this.stopped = value;
+        return this;
+    },
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    isStopped: function() {
+        return this.stopped;
     }
 });

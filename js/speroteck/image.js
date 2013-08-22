@@ -80,7 +80,7 @@ Speroteck.Image = Class.create({
      */
     addFabricObject: function (fabricObject) {
         // add group onto canvas
-        this.canvas.add(this.imgData.addWithUpdate(fabricObject.set({left: this.imgData.getLeft(), right: this.imgData.getRight()})));
+        this.canvas.add(this.imgData.addWithUpdate(fabricObject.set({left: this.imgData.getLeft(), top: this.imgData.getTop()})));
     },
 
     /**

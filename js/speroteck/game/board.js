@@ -88,6 +88,11 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
     height: undefined,
 
     /**
+     *
+     */
+    ai: undefined,
+
+    /**
      * init actions go here
      *
      * @param options
@@ -165,8 +170,10 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
                 'canvas': this.canvases[1],
                 'board': this,
                 'x': this.config.cellWidth2 + hl/2 * this.config.cellWidth,
-                'y': this.config.cellWidth2 +(vl -1) * this.config.cellWidth})
+                'y': this.config.cellHeight2 +(vl -1) * this.config.cellHeight})
         });
+
+        this.ai = new Speroteck.Game.AI({'board': this});
 
         this.gameMaster = new Speroteck.Game.Master({
             'board': this
