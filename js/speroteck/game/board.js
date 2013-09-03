@@ -16,7 +16,16 @@
  */
 
 Object.extend(Speroteck.Game.config, {
-    objMap: [0, Speroteck.Object.Obstacle.Brick, Speroteck.Object.Obstacle.Grass, Speroteck.Object.Obstacle.Water, Speroteck.Object.Obstacle.Concrete]
+    objMap: [0,
+        Speroteck.Object.Obstacle.Brick,
+        Speroteck.Object.Obstacle.Grass,
+        Speroteck.Object.Obstacle.Water,
+        Speroteck.Object.Obstacle.Concrete,
+        Speroteck.Object.Obstacle.Concrete.Up,
+        Speroteck.Object.Obstacle.Concrete.Down,
+        Speroteck.Object.Obstacle.Concrete.Left,
+        Speroteck.Object.Obstacle.Concrete.Right,
+        Speroteck.Object.Obstacle.Home]
 });
 /**
  * @requires Speroteck.Game
@@ -173,10 +182,10 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
         }
         this.player = new Speroteck.Game.Player({
             'tank': new Speroteck.Object.Tank.M5({
-                'canvas': this.canvases[1],
-                'board': this,
-                'x': this.config.cellWidth2 + hl/2 * this.config.cellWidth,
-                'y': this.config.cellHeight2 +(vl -1) * this.config.cellHeight})
+                canvas: this.canvases[1],
+                board: this,
+                x: this.config.cellWidth2 + (hl/2 - 3) * this.config.cellWidth,
+                y: this.config.cellHeight2 +(vl -1) * this.config.cellHeight})
         });
         this.initObjectTree();
         this.ai = new Speroteck.Game.AI({'board': this});
@@ -221,11 +230,11 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
         for (i = 0; i < this.config.numCellsVer; ++i) {
             for (j = 0; j < this.config.numCellsHor; ++j) {
                 if (typeof this.imgData[i][j] === 'object' && this.imgData[i][j].type !== 'grass') {
-                    this.objTree.add(this.imgData[i][j].getRectangle());
+                    this.objTree.add(this.imgData[i][j].getRectangle(), this.imgData[i][j]);
                 }
             }
         }
 
-        this.objTree.add(this.player.tank.getRectangle());
+        this.objTree.add(this.player.tank.getRectangle(), this.player.tank);
     }
 });

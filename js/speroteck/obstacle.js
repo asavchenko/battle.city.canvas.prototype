@@ -15,7 +15,6 @@
  * @class Speroteck.Object.Obstacle
  */
 Speroteck.Object.Obstacle = Class.create(Speroteck.Object, {
-
     /**
      *
      */
@@ -40,5 +39,13 @@ Speroteck.Object.Obstacle = Class.create(Speroteck.Object, {
         return typeof this.rectangle !== 'undefined'
             ? this.rectangle
             : this.rectangle = $super();
+    },
+
+    /**
+     *
+     * @returns {*}
+     */
+    acceptBullet: function() {
+        return this;
     }
 });

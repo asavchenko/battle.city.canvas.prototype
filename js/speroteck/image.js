@@ -101,24 +101,19 @@ Speroteck.Image = Class.create({
      * @param angle Number
      */
     move: function (x, y, angle) {
-        var dirty = false;
-        if (this.imgData.get('left') != x) {
+        if (!this.imgData) {
+            return;
+        }
+        if (this.imgData.get('left') !== x) {
             this.imgData.set('left', x);
-            dirty = true;
         }
 
-        if (this.imgData.get('top') != y) {
+        if (this.imgData.get('top') !== y) {
             this.imgData.set('top', y);
-            dirty = true;
         }
 
-        if (typeof angle !== 'undefined' && this.imgData.get('angle') != angle) {
+        if (typeof angle !== 'undefined' && this.imgData.get('angle') !== angle) {
             this.imgData.set('angle', angle);
-            dirty = true;
-        }
-
-        if (dirty) {
-            this.canvas.renderAll();
         }
     }
 });

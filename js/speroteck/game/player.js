@@ -15,13 +15,31 @@
  */
 Speroteck.Game.Player = Class.create(Speroteck.Game, {
     /**
-     * @type Speroteck.Tank.M5
+     * @type {Speroteck.Tank.M5}
      */
     tank: undefined,
 
     /**
      *
-     * @param options
+     */
+    keyInterval: 50,
+
+    /**
+     *
+     */
+    keyDownInterval: 0,
+
+    /**
+     *
+     */
+    keyUpOccurred: false,
+
+
+    /**
+     *
+     * @param options {object}
+     *
+     * @returns {void}
      */
     initialize: function(options) {
         options = options || {};
@@ -30,27 +48,48 @@ Speroteck.Game.Player = Class.create(Speroteck.Game, {
     },
 
     /**
-     *
+     * @returns {void}
      */
     enableControl: function() {
         $(document).observe('keydown', function(event) {
+            var direction = false;
+            if (this.keyDownInterval) {
+                return;
+            }
             switch (event.keyCode) {
                 case Event.KEY_UP:
-                    this.tank.up();
+                    direction = 'up';
                     break;
                 case Event.KEY_LEFT:
-                    this.tank.left();
+                    direction = 'left';
                     break;
                 case Event.KEY_DOWN:
-                    this.tank.down();
+                    direction = 'down';
                     break;
                 case Event.KEY_RIGHT:
-                    this.tank.right();
+                    direction = 'right';
+                    break;
+                case 32:
+                    this.tank.fire();
                     break;
                 case Event.KEY_ESC:
                     window.location.reload();
                     break;
             }
+
+            if (direction) {
+                this.keyDownInterval = window.setInterval(function() {
+                    if (this.keyUpOccurred) {
+                        this.keyUpOccurred = false;
+                        window.clearInterval(this.keyDownInterval);
+                        this.keyDownInterval = 0;
+                    }
+                    this.tank[direction]();
+                }.bind(this), this.keyInterval);
+            }
+        }.bind(this));
+        $(document).observe('keyup', function(event) {
+            this.keyUpOccurred = true;
         }.bind(this));
     }
 });

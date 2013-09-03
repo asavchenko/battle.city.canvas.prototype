@@ -61,7 +61,7 @@ Speroteck.QuadNode = Class.create({
     /**
      *
      */
-    maxObjects: 8,
+    maxObjects: 16,
 
     /**
      *
@@ -93,7 +93,7 @@ Speroteck.QuadNode = Class.create({
     split: function() {
         var h2 = this.height/2;
         var w2 = this.width/2;
-        var i;
+        var i, j;
         this.nodes.push(new Speroteck.QuadNode({
             top: this.top, left: this.left, bottom: this.top + h2, right: this.left + w2,
             parent: this,
@@ -123,10 +123,10 @@ Speroteck.QuadNode = Class.create({
             max: this.maxObjects*2
         }));
 
-        for (i=0; i < this.objects.length; ++i) {
-            for (var j = 0; j < this.nodes.length; ++j) {
-                if (this.nodes[j].isInsideExtended(this.objects[i])) {
-                    this.nodes[j].objects.push(this.objects[i]);
+        for (i = 0; i < this.objects.length; i += 1) {
+            for (j = 0; j < this.nodes.length; j += 1) {
+                if (this.nodes[j].isInsideExtended(this.objects[i][0])) {
+                    this.nodes[j].objects.push([this.objects[i][0], this.objects[i][1]]);
                 }
             }
             this.objects.splice(i, 1);
@@ -138,21 +138,23 @@ Speroteck.QuadNode = Class.create({
 
     /**
      *
-     * @param obj Object
+     * @param rec {object}
+     * @param obj {Speroteck.Object}
      *
      * @returns {*}
      */
-    add: function(obj) {
-        if (!this.isInsideExtended(obj)) return this;
+    add: function(rec, obj) {
+        var i;
+        if (!this.isInsideExtended(rec)) return this;
 
         if (this.objects.length < this.maxObjects && !this.nodes.length) {
-            this.objects.push(obj);
+            this.objects.push([rec, obj]);
         } else {
             if (!this.nodes.length) {
                 this.split();
             }
-            for (var i = 0; i < this.nodes.length; ++i) {
-                this.nodes[i].add(obj);
+            for (i = 0; i < this.nodes.length; i += 1) {
+                this.nodes[i].add(rec, obj);
             }
         }
 
@@ -161,23 +163,28 @@ Speroteck.QuadNode = Class.create({
 
     /**
      * does check if rec is inside current node
-     * @param obj Speroteck.Object
+     * @param rec {object}
+     *
      * @returns {boolean}
      */
-    isInside: function(obj) {
-        return this.left <= obj.x && obj.x <= this.right && this.top <= obj.y && obj.y <= this.bottom;
+    isInside: function(rec) {
+        return this.left <= rec.x
+            && rec.x <= this.right
+            && this.top <= rec.y
+            && rec.y <= this.bottom;
     },
 
     /**
      * returns neighbors of given rec
+     * @param rec {object}
      *
      * @returns Array
      */
-    getObjects: function(obj) {
+    getObjects: function(rec) {
         var quadrant;
 
-        if ((quadrant = this.getQuadrantExtended(obj)) !== -1) {
-            return this.nodes[quadrant].getObjects(obj);
+        if ((quadrant = this.getQuadrantExtended(rec)) !== -1) {
+            return this.nodes[quadrant].getObjects(rec);
         }
 
         return this.getAllObjects();
@@ -188,24 +195,14 @@ Speroteck.QuadNode = Class.create({
      * @returns {*}
      */
     getAllObjects: function() {
-        var objects = this.objects;
-        var parent  = this.parent;
+        var objects = this.objects,
+            parent  = this.parent;
         while (typeof parent !== 'undefined') {
             objects = objects.concat(parent.objects);
             parent = parent.parent;
         }
 
         return objects;
-    },
-
-    /**
-     * remove all objects from the tree
-     */
-    reset: function() {
-        this.objects = [];
-        for (var i=0; i<this.nodes.length; ++i) this.nodes[i].reset();
-
-        return this;
     },
 
     /**
@@ -216,12 +213,12 @@ Speroteck.QuadNode = Class.create({
      */
     isEmpty: function(x, y) {
         var i;
-        for (i=0; i < this.objects.length; ++i) {
-            if (Math.abs(x - this.objects[i].x) < 32 && Math.abs(y - this.objects[i].y)< 32) {
+        for (i = 0; i < this.objects.length; i += 1) {
+            if (Math.abs(x - this.objects[i][0].x) < 32 && Math.abs(y - this.objects[i][0].y) < 32) {
                 return false;
             }
         }
-        for (i = 0; i < this.nodes.length; i++) {
+        for (i = 0; i < this.nodes.length; i += 1) {
             if (this.nodes[i].isInside({'x': x, 'y': y})) {
                 return this.nodes[i].isEmpty(x, y);
             }
@@ -232,22 +229,50 @@ Speroteck.QuadNode = Class.create({
 
     /**
      *
-     * @param obj Object
+     * @param rec Object
      */
-    remove: function(obj) {
+    remove: function(rec) {
         var i;
-        for (i=0; i < this.objects.length; ++i) {
-            if (obj.x === this.objects[i].x && obj.y === this.objects[i].y) {
+        for (i = 0; i < this.objects.length; i += 1) {
+            if (rec.x === this.objects[i][0].x && rec.y === this.objects[i][0].y) {
                 this.objects.splice(i, 1);
                 i = 0;
             }
         }
 
-        for (i=0; i < this.nodes.length; ++i) {
-            this.nodes[i].remove(obj);
+        for (i = 0; i < this.nodes.length; i += 1) {
+            this.nodes[i].remove(rec);
         }
 
         return this;
+    },
+
+    /**
+     * does check if rec is inside current extended node
+     * @param rec {object}
+     *
+     * @returns {boolean}
+     */
+    isInsideExtended: function(rec) {
+        return this.getExtendedLeft() < rec.getLeft()
+            && rec.getRight()         < this.getExtendedRight()
+            && this.getExtendedTop()  < rec.getTop()
+            && rec.getBottom()        < this.getExtendedBottom();
+    },
+
+    /**
+     *
+     * @param rec
+     */
+    getQuadrantExtended: function(rec) {
+        var j;
+        for (j = 0; j < this.nodes.length; j += 1) {
+            if (this.nodes[j].isInsideExtended(rec) && this.nodes[j].isInside(rec)) {
+                return j;
+            }
+        }
+
+        return -1;
     },
 
     /**
@@ -323,28 +348,15 @@ Speroteck.QuadNode = Class.create({
     },
 
     /**
-     * does check if rec is inside current extended node
-     * @param obj Speroteck.Object
-     * @returns {boolean}
+     * remove all objects from the tree
      */
-    isInsideExtended: function(obj) {
-        return this.getExtendedLeft() < obj.getLeft()
-            && obj.getRight()         < this.getExtendedRight()
-            && this.getExtendedTop()  < obj.getTop()
-            && obj.getBottom()        < this.getExtendedBottom();
-    },
-
-    /**
-     *
-     * @param obj
-     */
-    getQuadrantExtended: function(obj) {
-        for (var j=0; j<this.nodes.length; ++j) {
-            if (this.nodes[j].isInsideExtended(obj) && this.nodes[j].isInside(obj)) {
-                return j;
-            }
+    reset: function() {
+        var i;
+        this.objects = [];
+        for (i = 0; i < this.nodes.length; i += 1) {
+            this.nodes[i].reset();
         }
 
-        return -1;
+        return this;
     }
 });

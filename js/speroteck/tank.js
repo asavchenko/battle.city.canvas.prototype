@@ -15,10 +15,6 @@
  * @class Speroteck.Object.Tank
  */
 Speroteck.Object.Tank = Class.create(Speroteck.Object, {
-    /**
-     *
-     */
-    speed: 0,
 
     /**
      *
@@ -28,7 +24,12 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     /**
      *
      */
-    fireRate: 0,
+    fireRate: 500,
+
+    /**
+     *
+     */
+    fireRateInterval: 0,
 
 
     /**
@@ -37,9 +38,19 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
     type: 'tank',
 
     /**
+     *
+     */
+    config: undefined,
+
+    /**
      * 
      */
     stopped: false,
+
+    /**
+     *
+     */
+    bullets: [],
 
     /**
      * {@inheritdoc}
@@ -51,8 +62,10 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
         this.speed = options.speed || this.speed;
         this.armor = options.armor || this.armor;
         this.board = options.board;
+        this.config = this.board.config;
         this.stopped = false;
-
+        this.fireRateInterval = 0;
+        this.bullets = [];
         this.registerEvents();
         Object.extend(options, {'width': this.config.cellWidth -1, 'height': this.config.cellHeight -1});
         $super(options);
@@ -62,7 +75,9 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      *
      */
     registerEvents: function() {
-        this.board.registerEventsPublisher(['tank_move_up', 'tank_move_down', 'tank_move_left', 'tank_move_right'], this)
+        this.board.registerEventsPublisher([
+            'tank_move_up', 'tank_move_down', 'tank_move_left', 'tank_move_right', 'tank_destroy'
+        ], this)
     },
 
     /**
@@ -197,62 +212,6 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
 
     /**
      *
-     * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
-     */
-    getLineTracesUp: function() {
-        var rec = this.getRectangle();
-        var l = rec.getLeft();
-        var t = rec.getTop();
-        var ts = t - this.speed;
-        var r = rec.getRight();
-
-        return {l1: rec.getLine(l, t, l, ts), l2: rec.getLine(r, t, r, ts)};
-    },
-
-    /**
-     *
-     * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
-     */
-    getLineTracesDown: function() {
-        var rec = this.getRectangle();
-        var l = rec.getLeft();
-        var b = rec.getBottom();
-        var bs = b + this.speed;
-        var r = rec.getRight();
-
-        return {l1: rec.getLine(l, b, l, bs), l2: rec.getLine(r, b, r, bs)};
-    },
-
-    /**
-     *
-     * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
-     */
-    getLineTracesLeft: function() {
-        var rec = this.getRectangle();
-        var l = rec.getLeft();
-        var ls = l - this.speed;
-        var b = rec.getBottom();
-        var t = rec.getTop();
-
-        return {l1: rec.getLine(l, t, ls, t), l2: rec.getLine(l, b, ls, b)};
-    },
-
-    /**
-     *
-     * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
-     */
-    getLineTracesRight: function() {
-        var rec = this.getRectangle();
-        var t = rec.getTop();
-        var b = rec.getBottom();
-        var r = rec.getRight();
-        var rs = r + this.speed;
-
-        return {l1: rec.getLine(r, t, rs, t), l2: rec.getLine(r, b, rs, b)};
-    },
-
-    /**
-     *
      * @param value {boolean}
      * @returns {*}
      */
@@ -267,5 +226,97 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      */
     isStopped: function() {
         return this.stopped;
+    },
+
+    /**
+     *
+     * @returns {*}
+     */
+    fire: function() {
+        var bullet;
+        if (this.fireRateInterval) {
+            return;
+        }
+        switch (this.angle) {
+            case this.config.downDirection:
+                bullet = new Speroteck.Object.Bullet({
+                    canvas: this.canvas,
+                    board: this.board,
+                    x: this.x,
+                    y: this.y + this.height2 - 10,
+                    angle: this.angle,
+                    owner: this
+                });
+                break;
+            case this.config.upDirection:
+                bullet = new Speroteck.Object.Bullet({
+                    canvas: this.canvas,
+                    board: this.board,
+                    x: this.x,
+                    y: this.y - this.height2 + 10,
+                    angle: this.angle,
+                    owner: this
+                });
+                break;
+            case this.config.leftDirection:
+                bullet = new Speroteck.Object.Bullet({
+                    canvas: this.canvas,
+                    board: this.board,
+                    x: this.x - this.width2 + 10,
+                    y: this.y,
+                    angle: this.angle,
+                    owner: this
+                });
+                break;
+            case this.config.rightDirection:
+                bullet = new Speroteck.Object.Bullet({
+                    canvas: this.canvas,
+                    board: this.board,
+                    x: this.x + this.width2 - 10,
+                    y: this.y,
+                    angle: this.angle,
+                    owner: this
+                });
+                break;
+        }
+        if (bullet) {
+            this.addBullet(bullet);
+            this.board.objTree.add(bullet.getRectangle(), bullet);
+        }
+        this.fireRateInterval = window.setTimeout(function() {
+           this.fireRateInterval = 0;
+        }.bind(this), this.fireRate);
+
+        return this;
+    },
+
+    /**
+     *
+     * @param bullet {Speroteck.Object.Bullet}
+     * @returns {*}
+     */
+    addBullet: function(bullet) {
+        this.bullets.push(bullet);
+
+        return this;
+    },
+
+    /**
+     *
+     * @param bullet {Speroteck.Object.Bullet}
+     * @returns {*}
+     */
+    removeBullet: function(bullet) {
+        var i;
+        bullet = bullet || {};
+        for (i = 0; i < this.bullets.length; i += 1) {
+            if (this.bullets[i].x === bullet.x && this.bullets[i].y === bullet.y) {
+                this.bullets.splice(i, 1);
+
+                return this;
+            }
+        }
+
+        return this;
     }
 });

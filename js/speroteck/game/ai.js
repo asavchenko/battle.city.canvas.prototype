@@ -80,8 +80,6 @@ Speroteck.Game.AI = Class.create(Speroteck.Game, {
         this.checkSquadCycle = window.setInterval(function() {
             var cell, type;
             if (this.squad.length >= this.numInSquad) {
-                window.clearInterval(this.checkSquadCycle);
-                this.checkSquadCycle = 0;
                 return;
             }
 
@@ -100,19 +98,23 @@ Speroteck.Game.AI = Class.create(Speroteck.Game, {
                         'board': this.board,
                         'x': cell.x,
                         'y': cell.y}));
-                    this.board.objTree.add(this.squad[this.squad.length-1].getRectangle());
+                    this.board.objTree.add(this.squad[this.squad.length-1].getRectangle(), this.squad[this.squad.length-1]);
                 }
-                if (this.squad.length >= this.numInSquad) break;
+                if (this.squad.length >= this.numInSquad) {
+                    break;
+                }
 
             }
-        }.bind(this), 2500);
+        }.bind(this), 3500);
     },
 
     /**
      *
      */
     enableControl: function() {
-        this.gameCycle = window.setInterval(function() {this.commandSquad();}.bind(this), 100);
+        this.gameCycle = window.setInterval(function() {
+            this.commandSquad();
+        }.bind(this), 50);
     },
 
     /**
@@ -143,7 +145,26 @@ Speroteck.Game.AI = Class.create(Speroteck.Game, {
                     default: this.randomChangeDirection(tank);
                 }
             }
+            if (this.config.math.random(25) == 3) {
+                tank.fire();
+            }
         }.bind(this));
+    },
+
+    /**
+     *
+     */
+    removeFromSquad: function(tank) {
+        var i;
+        for (i = 0; i < this.squad.length; i += 1) {
+            if (tank.x === this.squad[i].x && tank.y === this.squad[i].y) {
+                this.squad.splice(i, 1);
+            }
+        }
+        if (!this.numTanks--) {
+            window.clearInterval(this.checkSquadCycle);
+            this.checkSquadCycle = 0;
+        }
     },
 
     /**

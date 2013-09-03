@@ -1,30 +1,7 @@
 <html>
 <head>
     <title>Battle City</title>
-    <script type="text/javascript" src="js/libs/prototype.js"></script>
-    <script type="text/javascript" src="js/libs/fabric.js"></script>
-    <script type="text/javascript" src="js/libs/events.js"></script>
-    <script type="text/javascript" src="js/libs/loose.quad.tree.js"></script>
-    <script type="text/javascript" src="js/speroteck/game.js"></script>
-    <script type="text/javascript" src="js/speroteck/game/config.js"></script>
-    <script type="text/javascript" src="js/speroteck/game/math.js"></script>
-    <script type="text/javascript" src="js/speroteck/image.js"></script>
-    <script type="text/javascript" src="js/speroteck/object.js"></script>
-    <script type="text/javascript" src="js/speroteck/obstacle.js"></script>
-    <script type="text/javascript" src="js/speroteck/obstacle/brick.js"></script>
-    <script type="text/javascript" src="js/speroteck/obstacle/grass.js"></script>
-    <script type="text/javascript" src="js/speroteck/obstacle/water.js"></script>
-    <script type="text/javascript" src="js/speroteck/obstacle/concrete.js"></script>
-    <script type="text/javascript" src="js/speroteck/tank.js"></script>
-    <script type="text/javascript" src="js/speroteck/tank/m1.js"></script>
-    <script type="text/javascript" src="js/speroteck/tank/m2.js"></script>
-    <script type="text/javascript" src="js/speroteck/tank/m3.js"></script>
-    <script type="text/javascript" src="js/speroteck/tank/m4.js"></script>
-    <script type="text/javascript" src="js/speroteck/tank/m5.js"></script>
-    <script type="text/javascript" src="js/speroteck/game/board.js"></script>
-    <script type="text/javascript" src="js/speroteck/game/player.js"></script>
-    <script type="text/javascript" src="js/speroteck/game/ai.js"></script>
-    <script type="text/javascript" src="js/speroteck/game/master.js"></script>
+    <script type="text/javascript" src="js/battle.city.js"></script>
     <link rel="stylesheet" type="text/css" href="css/speroteck.css"/>
 </head>
 <body>
@@ -34,14 +11,24 @@
     <canvas id="layer-2" width="640" height="640"></canvas>
 </div>
 <img src="images/32/brick.png" id="speroteck-image-brick" style="display: none">
+<img src="images/8/brick-up.png" id="speroteck-image-brick-up" style="display: none">
+<img src="images/8/brick-down.png" id="speroteck-image-brick-down" style="display: none">
+<img src="images/8/brick-left.png" id="speroteck-image-brick-left" style="display: none">
+<img src="images/8/brick-right.png" id="speroteck-image-brick-right" style="display: none">
 <img src="images/32/concrete.png" id="speroteck-image-concrete" style="display: none">
+<img src="images/32/concrete-up.png" id="speroteck-image-concrete-up" style="display: none">
+<img src="images/32/concrete-down.png" id="speroteck-image-concrete-down" style="display: none">
+<img src="images/32/concrete-left.png" id="speroteck-image-concrete-left" style="display: none">
+<img src="images/32/concrete-right.png" id="speroteck-image-concrete-right" style="display: none">
 <img src="images/32/grass.gif" id="speroteck-image-grass" style="display: none">
 <img src="images/32/water.png" id="speroteck-image-water" style="display: none">
+<img src="images/32/home.png" id="speroteck-image-home" style="display: none">
 <img src="images/32/player.png" id="speroteck-image-player" style="display: none">
 <img src="images/32/enemy-1.png" id="speroteck-image-enemy-1" style="display: none">
 <img src="images/32/enemy-2.png" id="speroteck-image-enemy-2" style="display: none">
 <img src="images/32/enemy-3.png" id="speroteck-image-enemy-3" style="display: none">
 <img src="images/32/enemy-4.png" id="speroteck-image-enemy-4" style="display: none">
+<img src="images/other/bullet.png" id="speroteck-image-bullet" style="display: none">
 <script type="text/javascript">
         var canvas0 = new fabric.StaticCanvas('layer-0', {
             backgroundColor: 'rgb(0,0,0)'
@@ -52,9 +39,10 @@
         var canvas2 = new fabric.StaticCanvas('layer-2', {
         });
 
-        board = new Speroteck.Game.Board({
+        board = new Speroteck.Game({
             'canvases': [canvas0, canvas1, canvas2],
-            'levelUrl': 'http://tanki.dev/index.php',//here has to be an url to your local web-server
+            'levelUrl': 'http://127.0.0.1:8124/',//here has to be an url to your local web-server
+            'dynamicCanvas': canvas1,//here has to be an url to your local web-server
             'level': 0
         });
 </script>
