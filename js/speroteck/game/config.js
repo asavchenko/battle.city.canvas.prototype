@@ -28,3 +28,7 @@ Object.extend(Speroteck.Game.config, {
     downDirection: 180,
     rightDirection: 90
 });
+
+isSet = function(x) {
+    return typeof x !== 'undefined';
+};
