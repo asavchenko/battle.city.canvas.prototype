@@ -28,13 +28,5 @@ Speroteck.Object.Obstacle.Concrete.Up = Class.create(Speroteck.Object.Obstacle.C
         options.height = this.config.cellHeight2;
         options.y = options.y - (this.config.cellHeight2 / 2);
         $super(options);
-        this.width = this.config.cellWidth;
-        this.height = this.config.cellHeight2;
-        this.width2 = this.width/2;
-        this.height2 = this.height/2;
-
-        this.x = options.x || 0;
-        this.y = options.y - (this.config.cellHeight2 / 2);
-        console.log(this)
     }
 });
