@@ -12,12 +12,12 @@ Speroteck.Game.AI = Class.create(Speroteck.Game, {
     /**
      *
      */
-    numTanks: 20,
+    numTanks: 35,
 
     /**
      *
      */
-    numInSquad: 35,
+    numInSquad: 4,
 
     /**
      *

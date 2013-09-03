@@ -16,7 +16,7 @@
  */
 
 Object.extend(Speroteck.Game.config, {
-    objMap: [0, Speroteck.Object.Obstacle.Brick, Speroteck.Object.Obstacle.Grass, Speroteck.Object.Obstacle.Water]
+    objMap: [0, Speroteck.Object.Obstacle.Brick, Speroteck.Object.Obstacle.Grass, Speroteck.Object.Obstacle.Water, Speroteck.Object.Obstacle.Concrete]
 });
 /**
  * @requires Speroteck.Game
