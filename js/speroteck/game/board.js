@@ -16,7 +16,7 @@
  */
 
 Object.extend(Speroteck.Game.config, {
-    objMap: [0, Speroteck.Object.Obstacle.Brick, Speroteck.Object.Obstacle.Grass, Speroteck.Object.Obstacle.Water, Speroteck.Object.Obstacle.Concrete]
+    objMap: [0, Speroteck.Object.Obstacle.Brick, Speroteck.Object.Obstacle.Grass, Speroteck.Object.Obstacle.Water, Speroteck.Object.Obstacle.Concrete, Speroteck.Object.Obstacle.Home]
 });
 /**
  * @requires Speroteck.Game
@@ -175,7 +175,7 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
             'tank': new Speroteck.Object.Tank.M5({
                 'canvas': this.canvases[1],
                 'board': this,
-                'x': this.config.cellWidth2 + hl/2 * this.config.cellWidth,
+                'x': this.config.cellWidth2 + (hl/2 - 3) * this.config.cellWidth,
                 'y': this.config.cellHeight2 +(vl -1) * this.config.cellHeight})
         });
         this.initObjectTree();
