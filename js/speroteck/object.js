@@ -97,5 +97,17 @@ Speroteck.Object = Class.create(Event.Publisher, {
         }
 
         this.imageObj = options.imageObj;
+    },
+
+    /**
+     *
+     * @returns {Speroteck.Game.config.math.Rectangle}
+     */
+    getRectangle: function() {
+        return new Speroteck.Game.config.math.Rectangle([
+            this.x - this.width2, this.y - this.height2,
+            this.x + this.width2, this.y - this.height2,
+            this.x - this.width2, this.y + this.height2,
+            this.x + this.width2, this.y + this.height2]);
     }
 });

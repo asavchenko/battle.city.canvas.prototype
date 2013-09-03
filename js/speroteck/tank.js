@@ -30,10 +30,6 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      */
     fireRate: 0,
 
-    /**
-     *
-     */
-    board: undefined,
 
     /**
      *
@@ -201,17 +197,16 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
 
     /**
      *
-     * @returns {{l1: math.Line, l2: math.Line}}
+     * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
      */
     getLineTracesUp: function() {
-        var line1 = new this.config.math.Line([
-            this.x - this.width2, this.y - this.height2,
-            this.x - this.width2, this.y - this.height2 - this.speed]);
-        var line2 = new this.config.math.Line([
-            this.x + this.width2, this.y - this.height2,
-            this.x + this.width2, this.y - this.height2 - this.speed]);
+        var rec = this.getRectangle();
+        var l = rec.getLeft();
+        var t = rec.getTop();
+        var ts = t - this.speed;
+        var r = rec.getRight();
 
-        return {l1: line1, l2: line2};
+        return {l1: rec.getLine(l, t, l, ts), l2: rec.getLine(r, t, r, ts)};
     },
 
     /**
@@ -219,14 +214,13 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
      */
     getLineTracesDown: function() {
-        var line1 = new this.config.math.Line([
-            this.x - this.width2, this.y + this.height2,
-            this.x - this.width2, this.y + this.height2 + this.speed]);
-        var line2 = new this.config.math.Line([
-            this.x + this.width2, this.y + this.height2,
-            this.x + this.width2, this.y + this.height2 + this.speed]);
+        var rec = this.getRectangle();
+        var l = rec.getLeft();
+        var b = rec.getBottom();
+        var bs = b + this.speed;
+        var r = rec.getRight();
 
-        return {l1: line1, l2: line2};
+        return {l1: rec.getLine(l, b, l, bs), l2: rec.getLine(r, b, r, bs)};
     },
 
     /**
@@ -234,14 +228,13 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
      */
     getLineTracesLeft: function() {
-        var line1 = new this.config.math.Line([
-            this.x - this.width2,            this.y - this.height2,
-            this.x - this.width2-this.speed, this.y - this.height2]);
-        var line2 = new this.config.math.Line([
-            this.x - this.width2,            this.y + this.height2,
-            this.x - this.width2-this.speed, this.y + this.height2]);
+        var rec = this.getRectangle();
+        var l = rec.getLeft();
+        var ls = l - this.speed;
+        var b = rec.getBottom();
+        var t = rec.getTop();
 
-        return {l1: line1, l2: line2};
+        return {l1: rec.getLine(l, t, ls, t), l2: rec.getLine(l, b, ls, b)};
     },
 
     /**
@@ -249,14 +242,13 @@ Speroteck.Object.Tank = Class.create(Speroteck.Object, {
      * @returns {{l1: Speroteck.Game.config.math.Line, l2: Speroteck.Game.config.math.Line}}
      */
     getLineTracesRight: function() {
-        var line1 = new this.config.math.Line([
-            this.x + this.width2,              this.y - this.height2,
-            this.x + this.width2 + this.speed, this.y - this.height2]);
-        var line2 = new this.config.math.Line([
-            this.x + this.width2,              this.y + this.height2,
-            this.x + this.width2 + this.speed, this.y + this.height2]);
+        var rec = this.getRectangle();
+        var t = rec.getTop();
+        var b = rec.getBottom();
+        var r = rec.getRight();
+        var rs = r + this.speed;
 
-        return {l1: line1, l2: line2};
+        return {l1: rec.getLine(r, t, rs, t), l2: rec.getLine(r, b, rs, b)};
     },
 
     /**

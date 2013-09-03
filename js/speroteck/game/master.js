@@ -10,12 +10,18 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
     config: Speroteck.Game.config,
 
     /**
+     *
+     */
+    objTree: undefined,
+
+    /**
      * @constructor
      * @param options
      */
     initialize: function (options) {
         options = options || {};
         this.board = options.board;
+        this.objTree = this.board.objTree;
         this.subscribeOnTankEvents();
     },
 
@@ -30,11 +36,40 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
     },
 
     /**
+     * param obj
+     * @returns {*}
+     */
+    removeFromTree: function(obj) {
+        this.objTree.remove(obj.getRectangle());
+        return this;
+    },
+
+    /**
+     *
+     * @param obj
+     * @returns {*}
+     */
+    addToTree: function(obj) {
+        this.objTree.add(obj.getRectangle());
+        return this;
+    },
+
+    /**
+     *
+     * @param obj
+     * @returns {Array}
+     */
+    getTreeNeighbours: function(obj) {
+        return this.objTree.getObjects(obj.getRectangle())
+    },
+
+    /**
      *
      * @param event
      */
     onTankMoveUp: function(event) {
         var tank = event.eventData.eventTarget;
+        this.removeFromTree(tank);
         var yCollision = this.getCollisionsUp(tank);
         tank.setStopped(true);
         if (yCollision) {
@@ -46,7 +81,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
         }
 
         tank.move(this.config.upDirection);
-
+        this.addToTree(tank);
     },
 
     /**
@@ -55,6 +90,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
      */
     onTankMoveLeft: function(event) {
         var tank = event.eventData.eventTarget;
+        this.removeFromTree(tank);
         var xCollision;
         tank.setStopped(true);
         if (xCollision = this.getCollisionsLeft(tank)) {
@@ -66,6 +102,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
         }
 
         tank.move(this.config.leftDirection);
+        this.addToTree(tank);
     },
 
     /**
@@ -74,6 +111,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
      */
     onTankMoveDown: function(event) {
         var tank = event.eventData.eventTarget;
+        this.removeFromTree(tank);
         var yCollision;
         tank.setStopped(true);
         if (yCollision = this.getCollisionsDown(tank)) {
@@ -85,6 +123,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
         }
 
         tank.move(this.config.downDirection);
+        this.addToTree(tank);
     },
 
     /**
@@ -93,6 +132,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
      */
     onTankMoveRight: function(event) {
         var tank = event.eventData.eventTarget;
+        this.removeFromTree(tank);
         var xCollision = this.getCollisionsRight(tank);
         tank.setStopped(true);
         if (xCollision) {
@@ -104,6 +144,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
         }
 
         tank.move(this.config.rightDirection);
+        this.addToTree(tank);
     },
 
     /**
@@ -111,19 +152,13 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
      * @param tank Speroteck.Object.Tank
      */
     getCollisionsUp: function(tank) {
-        var x = parseInt(tank.x/this.config.cellWidth),
-            y1 = parseInt((tank.y + this.config.cellHeight2)/this.config.cellHeight),
-            y2 = parseInt((tank.y - this.config.cellHeight2- tank.speed)/this.config.cellHeight),
-            yIntersection,
-            tankTraces = undefined;
-        for (var j = y1; j>= y2; --j)
-            for (var i = x-1; i <= x+1; ++i)
-                if (this.isCellForbidden(j, i) && this.isCellObject(j, i)
-                    && (yIntersection = this.isIntersectionWithObstacleUp(
+        var objects = this.getTreeNeighbours(tank), yIntersection, tankTraces = undefined;
+        for (var i= 0, l = objects.length; i<l; ++i) {
+            if (yIntersection = this.isIntersectionWithObstacleUp(
                     tankTraces = (typeof tankTraces === 'undefined' ? tank.getLineTracesUp() : tankTraces),
-                    this.board.imgData[j][i])
-                    )
-                    )   return yIntersection;
+                    objects[i]
+                )) return yIntersection;
+        }
 
         return false;
     },
@@ -133,18 +168,13 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
      * @param tank Speroteck.Object.Tank
      */
     getCollisionsDown: function(tank) {
-        var x = parseInt(tank.x/this.config.cellWidth),
-            y1 = parseInt((tank.y)/this.config.cellHeight),
-            y2 = parseInt((tank.y + this.config.cellHeight2 + tank.speed)/this.config.cellHeight),
-            yIntersection,
-            tankTraces = undefined;
-        for (var j = y1; j <= y2; ++j)
-            for(var i = x-1; i <= x+1; ++i)
-                if (this.isCellForbidden(j, i) && this.isCellObject(j, i)
-                    && (yIntersection = this.isIntersectionWithObstacleDown(tankTraces = (tankTraces || tank.getLineTracesDown()),
-                    this.board.imgData[j][i])
-                    )
-                    ) return yIntersection;
+        var objects = this.getTreeNeighbours(tank), yIntersection, tankTraces = undefined;
+        for (var i= 0, l = objects.length; i<l; ++i) {
+            if (yIntersection = this.isIntersectionWithObstacleDown(
+                tankTraces = (typeof tankTraces === 'undefined' ? tank.getLineTracesDown() : tankTraces),
+                objects[i]
+            )) return yIntersection;
+        }
 
         return false;
     },
@@ -154,18 +184,13 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
      * @param tank Speroteck.Object.Tank
      */
     getCollisionsRight: function(tank) {
-        var y = parseInt(tank.y/this.config.cellHeight),
-            x1 = parseInt(tank.x/this.config.cellWidth),
-            x2 = parseInt((tank.x + tank.width2 + tank.speed)/this.config.cellWidth),
-            xIntersection,
-            tankTraces = undefined;
-        for (var j = x1; j <= x2; ++j)
-            for (var i = y-1; i <= y+1; ++i)
-                if (this.isCellForbidden(i, j) && this.isCellObject(i, j)
-                    && (xIntersection = this.isIntersectionWithObstacleRight(tankTraces = (tankTraces || tank.getLineTracesRight()),
-                    this.board.imgData[i][j])
-                    )
-                    ) return xIntersection;
+        var objects = this.getTreeNeighbours(tank), xIntersection, tankTraces = undefined;
+        for (var i= 0, l = objects.length; i<l; ++i) {
+            if (xIntersection = this.isIntersectionWithObstacleRight(
+                tankTraces = (typeof tankTraces === 'undefined' ? tank.getLineTracesRight() : tankTraces),
+                objects[i]
+            )) return xIntersection;
+        }
 
         return false;
     },
@@ -175,41 +200,15 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
      * @param tank Speroteck.Object.Tank
      */
     getCollisionsLeft: function(tank) {
-        var y = parseInt(tank.y/this.config.cellHeight),
-            x1 = parseInt(tank.x/this.config.cellWidth),
-            x2 = parseInt((tank.x - this.config.cellWidth2 - tank.speed)/this.config.cellWidth),
-            xIntersection,
-            tankTraces = undefined;
-        for (var j = x1; j>= x2; --j)
-            for (var i = y - 1; i <= y + 1; ++i)
-                if (this.isCellForbidden(i, j) && this.isCellObject(i, j)
-                    && (xIntersection = this.isIntersectionWithObstacleLeft(tankTraces = (tankTraces ||  tank.getLineTracesLeft()),
-                    this.board.imgData[i][j])
-                    )
-                    ) return xIntersection;
+        var objects = this.getTreeNeighbours(tank), xIntersection, tankTraces = undefined;
+        for (var i= 0, l = objects.length; i<l; ++i) {
+            if (xIntersection = this.isIntersectionWithObstacleLeft(
+                tankTraces = (typeof tankTraces === 'undefined' ? tank.getLineTracesLeft() : tankTraces),
+                objects[i]
+            )) return xIntersection;
+        }
 
         return false;
-    },
-
-    /**
-     *
-     * @param i {Number}
-     * @param j {Number}
-     * @returns {boolean}
-     */
-    isCellForbidden: function(i, j) {
-        var isObject = this.isCellObject(i, j);
-        return !(isObject && this.board.imgData[i][j].type === 'grass') || !isObject;
-    },
-
-    /**
-     *
-     * @param i {Number}
-     * @param j {Number}
-     */
-    isCellObject: function(i, j) {
-        return typeof this.board.imgData[i] !== 'undefined' && typeof this.board.imgData[i][j] !== 'undefined'
-            && this.board.imgData[i][j] !== 0;
     },
 
     /**

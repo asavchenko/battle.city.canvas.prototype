@@ -56,6 +56,11 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
     imgData: [],
 
     /**
+     *
+     */
+    objTree: undefined,
+
+    /**
      * global config object, wrapped in Speroteck Namespace
      * @type Object
      */
@@ -157,7 +162,8 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
                             'y': this.config.cellHeight2 + i * this.config.cellHeight,
                             'canvas': (typeof this.canvases[parseInt(this.zdata[i][j])] !== 'undefined'
                                 ? this.canvases[parseInt(this.zdata[i][j])]
-                                : this.canvases[0])
+                                : this.canvases[0]),
+                            board: this
                         }))
                         : this.data[i][j];
                 } else {
@@ -172,12 +178,12 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
                 'x': this.config.cellWidth2 + hl/2 * this.config.cellWidth,
                 'y': this.config.cellHeight2 +(vl -1) * this.config.cellHeight})
         });
-
+        this.initObjectTree();
         this.ai = new Speroteck.Game.AI({'board': this});
 
         this.gameMaster = new Speroteck.Game.Master({
             'board': this
-        })
+        });
     },
 
     /**
@@ -202,5 +208,24 @@ Speroteck.Game.Board = Class.create(Event.Broker, {
         }
 
         return this.height;
+    },
+
+    /**
+     *
+     */
+    initObjectTree: function() {
+        var i, j;
+        this.objTree = new Speroteck.QuadNode({
+            left: -2, right: this.getWidth()+2, top: -2, bottom: this.getHeight()+2, canvas: this.canvases[this.canvases.length - 1]
+        });
+        for (i = 0; i < this.config.numCellsVer; ++i) {
+            for (j = 0; j < this.config.numCellsHor; ++j) {
+                if (typeof this.imgData[i][j] === 'object' && this.imgData[i][j].type !== 'grass') {
+                    this.objTree.add(this.imgData[i][j].getRectangle());
+                }
+            }
+        }
+
+        this.objTree.add(this.player.tank.getRectangle());
     }
 });
