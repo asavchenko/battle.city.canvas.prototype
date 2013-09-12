@@ -220,7 +220,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
     isIntersectionWithObstacleUp: function(lines, o) {
         var bottomObstacleLine = o.getBottomLine();
         if (this.config.math.isIntersection(lines.l1, bottomObstacleLine)
-            || this.config.math.isIntersection(lines.l2, bottomObstacleLine)) return o.getBottom();
+            || this.config.math.isIntersection(lines.l2, bottomObstacleLine)) return o.getBottom()+0.5;
 
         return false;
     },
@@ -234,7 +234,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
     isIntersectionWithObstacleDown: function(lines, o) {
         var topObstacleLine = o.getTopLine();
         if (this.config.math.isIntersection(lines.l1, topObstacleLine)
-            || this.config.math.isIntersection(lines.l2, topObstacleLine)) return o.getTop();
+            || this.config.math.isIntersection(lines.l2, topObstacleLine)) return o.getTop()-0.5;
 
         return false;
     },
@@ -248,7 +248,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
     isIntersectionWithObstacleRight: function(lines, o) {
         var leftObstacleLine = o.getLeftLine();
         if (this.config.math.isIntersection(lines.l1, leftObstacleLine)
-            || this.config.math.isIntersection(lines.l2, leftObstacleLine)) return o.getLeft();
+            || this.config.math.isIntersection(lines.l2, leftObstacleLine)) return o.getLeft()-0.5;
 
         return false;
     },
@@ -262,7 +262,7 @@ Speroteck.Game.Master = Class.create(Event.Listener, {
     isIntersectionWithObstacleLeft: function(lines, o) {
         var rightObstacleLine = o.getRightLine();
         if (this.config.math.isIntersection(lines.l1, rightObstacleLine)
-            || this.config.math.isIntersection(lines.l2, rightObstacleLine)) return o.getRight();
+            || this.config.math.isIntersection(lines.l2, rightObstacleLine)) return o.getRight()+0.5;
 
         return false;
     }

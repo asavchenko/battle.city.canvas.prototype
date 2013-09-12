@@ -17,7 +17,7 @@ Speroteck.Game.AI = Class.create(Speroteck.Game, {
     /**
      *
      */
-    numInSquad: 0,
+    numInSquad: 4,
 
     /**
      *
@@ -112,7 +112,7 @@ Speroteck.Game.AI = Class.create(Speroteck.Game, {
      *
      */
     enableControl: function() {
-        this.gameCycle = window.setInterval(function() {this.commandSquad();}.bind(this), 100);
+        this.gameCycle = window.setInterval(function() {this.commandSquad();}.bind(this), 50);
     },
 
     /**

@@ -15,13 +15,15 @@
  */
 Speroteck.Game.Player = Class.create(Speroteck.Game, {
     /**
-     * @type Speroteck.Tank.M5
+     * @type {Speroteck.Tank.M5}
      */
     tank: undefined,
 
     /**
      *
-     * @param options
+     * @param options {object}
+     *
+     * @returns {void}
      */
     initialize: function(options) {
         options = options || {};
@@ -30,7 +32,7 @@ Speroteck.Game.Player = Class.create(Speroteck.Game, {
     },
 
     /**
-     *
+     * @returns {void}
      */
     enableControl: function() {
         $(document).observe('keydown', function(event) {

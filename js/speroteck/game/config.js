@@ -26,7 +26,8 @@ Object.extend(Speroteck.Game.config, {
     upDirection: 360,
     leftDirection: 270,
     downDirection: 180,
-    rightDirection: 90
+    rightDirection: 90,
+    renderInterval: 20
 });
 
 isSet = function(x) {
