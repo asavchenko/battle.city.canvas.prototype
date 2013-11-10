@@ -62,9 +62,10 @@
         var canvas2 = new fabric.StaticCanvas('layer-2', {
         });
 
-        board = new Speroteck.Game.Board({
+        board = new Speroteck.Game({
             'canvases': [canvas0, canvas1, canvas2],
-            'levelUrl': 'http://tanki.dev/index.php',//here has to be an url to your local web-server
+            'levelUrl': 'http://127.0.0.1:8124/',//here has to be an url to your local web-server
+            'dynamicCanvas': canvas1,//here has to be an url to your local web-server
             'level': 0
         });
 </script>

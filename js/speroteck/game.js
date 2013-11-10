@@ -50,7 +50,6 @@ Speroteck.Game = Class.create({
             return;
         }
         this.canvas = options.dynamicCanvas;
-        console.log(options);
         this.gameCycle = 0;
         this.board = new Speroteck.Game.Board(options);
         this.enableGameCycle();

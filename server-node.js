@@ -40,7 +40,7 @@ var s = http.createServer(function (req, res) {
     } else {
         filePath = url.parse(req.url).pathname;
         fullPath = path.join(process.cwd(), filePath);
-        path.exists(fullPath, function (exists) {
+        fs.exists(fullPath, function (exists) {
             if (!exists) {
                 res.writeHeader(404, {"Content-Type": "text/plain"});
                 res.write('404 Not Found\n');
