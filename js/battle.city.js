@@ -740,8 +740,8 @@ typeof this.imgData[a][b]&&"grass"!==this.imgData[a][b].type&&this.objTree.add(t
  @author       Speroteck team (dev@speroteck.com)
  @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
-Speroteck.Game.Player=Class.create(Speroteck.Game,{tank:void 0,keyInterval:50,keyDownInterval:0,keyUpOccurred:!1,initialize:function(a){a=a||{};this.tank=a.tank;this.enableControl()},enableControl:function(){$(document).observe("keydown",function(a){var b=!1;if(!this.keyDownInterval){switch(a.keyCode){case Event.KEY_UP:b="up";break;case Event.KEY_LEFT:b="left";break;case Event.KEY_DOWN:b="down";break;case Event.KEY_RIGHT:b="right";break;case 32:this.tank.fire();break;case Event.KEY_ESC:window.location.reload()}b&&
-(this.keyDownInterval=window.setInterval(function(){this.keyUpOccurred&&(this.keyUpOccurred=!1,window.clearInterval(this.keyDownInterval),this.keyDownInterval=0);this.tank[b]()}.bind(this),this.keyInterval))}}.bind(this));$(document).observe("keyup",function(a){this.keyUpOccurred=!0}.bind(this))}});/*
+Speroteck.Game.Player=Class.create(Speroteck.Game,{tank:void 0,keyInterval:50,keyDownInterval:0,keyUpOccurred:!1,initialize:function(a){a=a||{};this.tank=a.tank;this.enableControl()},enableControl:function(){$(document).observe("keydown",function(a){var b=!1;if(!this.keyDownInterval||32===a.keyCode){switch(a.keyCode){case Event.KEY_UP:b="up";break;case Event.KEY_LEFT:b="left";break;case Event.KEY_DOWN:b="down";break;case Event.KEY_RIGHT:b="right";break;case 32:this.tank.fire();break;case Event.KEY_ESC:window.location.reload()}b&&
+(this.keyDownInterval=window.setInterval(function(){this.tank[b]()}.bind(this),this.keyInterval))}}.bind(this));$(document).observe("keyup",function(a){32!==a.keyCode&&(window.clearInterval(this.keyDownInterval),this.keyDownInterval=0)}.bind(this))}});/*
     Copyright (c) 2013 Speroteck Inc. (www.speroteck.com)
  @author       Speroteck team (dev@speroteck.com)
  @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)

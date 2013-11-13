@@ -53,7 +53,7 @@ Speroteck.Game.Player = Class.create(Speroteck.Game, {
     enableControl: function() {
         $(document).observe('keydown', function(event) {
             var direction = false;
-            if (this.keyDownInterval) {
+            if (this.keyDownInterval && event.keyCode !== 32) {
                 return;
             }
             switch (event.keyCode) {
@@ -79,17 +79,15 @@ Speroteck.Game.Player = Class.create(Speroteck.Game, {
 
             if (direction) {
                 this.keyDownInterval = window.setInterval(function() {
-                    if (this.keyUpOccurred) {
-                        this.keyUpOccurred = false;
-                        window.clearInterval(this.keyDownInterval);
-                        this.keyDownInterval = 0;
-                    }
                     this.tank[direction]();
                 }.bind(this), this.keyInterval);
             }
         }.bind(this));
         $(document).observe('keyup', function(event) {
-            this.keyUpOccurred = true;
+            if (event.keyCode !== 32) {
+                window.clearInterval(this.keyDownInterval);
+                this.keyDownInterval = 0;
+            }
         }.bind(this));
     }
 });
