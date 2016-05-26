@@ -4,7 +4,7 @@ battle.city.canvas.prototype
 The game battle city written with canvas and prototype.js
 
 
-to run a game you need to have nodejs installed:
+to run the game you need to have nodejs installed:
 >node server-node.js
 
 go in browser http://127.0.0.1:8124/index.html
